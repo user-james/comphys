@@ -20,16 +20,17 @@ int main(int argc, char* argv[]){
  * This program calculates the expectation value of a given wave using numerical integration 
  */
     double x0 = 0.5;
-    double step = 0.001;
+    double step = 0.01;
     double expected = 0;
 
     //test_integration(step);           /* uncomment this line if you want to test the numerical intgration for a given step size */
-    
-    energies = fopen("energies", "w");
-    while(x0 < 1.55){
+   
+    printf("Step size = %.3f\n", step); 
+    energies = fopen("./ex1/energies", "w");
+    while(x0 <= 1.50){
         expected = exp_val(x0, step);
-        fprintf(energies, "%.2f \t %lf\n", x0, expected);
-        x0 += 0.05;
+        fprintf(energies, "%.3f \t %lf\n", x0, expected);
+        x0 += 0.01;
     }
     fclose(energies); 
 
