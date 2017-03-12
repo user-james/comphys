@@ -25,12 +25,12 @@ int main(int argc, char* argv[]){
 
     //test_integration(step);           /* uncomment this line if you want to test the numerical intgration for a given step size */
    
-    printf("Step size = %.3f\n", step); 
+    printf("Integration step size = %.3f\n", step); 
     energies = fopen("./ex1/energies", "w");
     while(x0 <= 1.50){
         expected = exp_val(x0, step);
         fprintf(energies, "%.3f \t %lf\n", x0, expected);
-        x0 += 0.01;
+        x0 += 0.002;
     }
     fclose(energies); 
 
