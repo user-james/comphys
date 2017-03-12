@@ -1,0 +1,13 @@
+uniform grid: min 0.000000, max 1.000000, with 1000 grid points 
+energy 0 = 9.889365 
+ average coord for state 0 is 0.499500, coord^2 is 0.282108 and weight is 1.000000 
+energy 1 = 39.557363 
+ average coord for state 1 is 0.499500, coord^2 is 0.320027 and weight is 1.000000 
+energy 2 = 89.003699 
+ average coord for state 2 is 0.499500, coord^2 is 0.327049 and weight is 1.000000 
+energy 3 = 158.227886 
+ average coord for state 3 is 0.499500, coord^2 is 0.329507 and weight is 1.000000 
+energy 4 = 247.229238 
+ average coord for state 4 is 0.499500, coord^2 is 0.330645 and weight is 1.000000 
+energy 5 = 356.006875 
+ average coord for state 5 is 0.499500, coord^2 is 0.331263 and weight is 0.999999 
