@@ -28,7 +28,9 @@ int main(int argc, char* argv[]){
     char local[40];
 
     //test_integration(step);           /* uncomment this line if you want to test the numerical intgration for a given step size */
-   
+  
+    
+    /*-------- Q1 --------*/ 
     printf("Integration step size = %.3f\n", step); 
     energies = fopen("./ex1/energies", "w");
     while(x0 <= 1.50){
@@ -38,15 +40,16 @@ int main(int argc, char* argv[]){
     }
     fclose(energies);
     
-    x0 = 1.324431; 
-    //for(x0=0.5;x0<=1.5;x0 += 0.5){ 
-        sprintf(local, "./ex2/localenergy_x0_%.6f", x0);
+    /*-------- Q2 --------*/
+    //x0 = 1.32; 
+    for(x0=0.5;x0<=1.5;x0 += 0.5){ 
+        sprintf(local, "./ex2/localenergy_x0_%.2f", x0);
         localenergy = fopen(local, "w");
         for(x=-5; x<5; x += 0.1){
             fprintf(localenergy, "%.2f \t %lf\n", x, local_E(x, x0));
         }
         fclose(localenergy);
-    //}
+    }
 
     return 0;
 }
