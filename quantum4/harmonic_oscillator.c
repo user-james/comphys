@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-/* Define pi as it is used for the test function*/
+/* Define pi as it is used to test the integration*/
 #define pi 3.14159265358979323846 
 
 FILE *energies;
+FILE *localenergy;
 
 /* Defining functions to be used*/
 double simpsons(double, double, double, double (*f)(double, double), double);
@@ -14,14 +15,17 @@ double gaussian_sq(double, double);
 void test_integration(double);
 double H_oscillator(double, double);
 double exp_val(double, double);
+double local_E(double, double);
 
 int main(int argc, char* argv[]){
 /*
  * This program calculates the expectation value of a given wave using numerical integration 
  */
     double x0 = 0.5;
+    double x = 0;
     double step = 0.01;
     double expected = 0;
+    char local[40];
 
     //test_integration(step);           /* uncomment this line if you want to test the numerical intgration for a given step size */
    
@@ -32,8 +36,17 @@ int main(int argc, char* argv[]){
         fprintf(energies, "%.3f \t %lf\n", x0, expected);
         x0 += 0.002;
     }
-    fclose(energies); 
-
+    fclose(energies);
+    
+    x0 = 1.324431; 
+    //for(x0=0.5;x0<=1.5;x0 += 0.5){ 
+        sprintf(local, "./ex2/localenergy_x0_%.6f", x0);
+        localenergy = fopen(local, "w");
+        for(x=-5; x<5; x += 0.1){
+            fprintf(localenergy, "%.2f \t %lf\n", x, local_E(x, x0));
+        }
+        fclose(localenergy);
+    //}
 
     return 0;
 }
@@ -47,6 +60,17 @@ double H_oscillator(double x, double x0){
     return ( 1/(x0*x0) - 2*x*x*pow(x0, -4) + 0.5*k*x*x ) * gaussian_sq(x, x0);
 }
 
+
+double local_E(double x, double x0){
+/*
+   Returns the local energy of the system
+
+   E_local = H(psi)/psi = [-d(psi)/dx^2 / psi + kx^2]/2
+   where psi = exp(-(x/x0)^2)
+ */
+    return  1/(x0*x0) - 2*x*x*pow(x0, -4) + 0.5*1.3*x*x;
+    
+}
 
 double exp_val(double x0, double step){
 /*
