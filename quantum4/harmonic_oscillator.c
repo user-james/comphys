@@ -12,10 +12,12 @@ FILE *localenergy;
 double simpsons(double, double, double, double (*f)(double, double), double);
 double gaussian(double, double);
 double gaussian_sq(double, double);
+double wavepacket_sq(double, double);
 void test_integration(double);
-double H_oscillator(double, double);
-double exp_val(double, double);
-double local_E(double, double);
+double H(double, double);
+double H_new(double, double);
+double exp_val(double, double, double (*f)(double, double), double (*g)(double, double));
+double local_E(double, double, bool);
 
 int main(int argc, char* argv[]){
 /*
@@ -31,31 +33,54 @@ int main(int argc, char* argv[]){
   
     
     /*-------- Q1 --------*/ 
-    printf("Integration step size = %.3f\n", step); 
+/*
+    printf("Integration step size = %.3f\n", step);
+    x0 = 0.5;
     energies = fopen("./ex1/energies", "w");
     while(x0 <= 1.50){
-        expected = exp_val(x0, step);
+        expected = exp_val(x0, step, H, gaussian_sq);
         fprintf(energies, "%.3f \t %lf\n", x0, expected);
         x0 += 0.002;
     }
     fclose(energies);
-    
+*/
+
+
+
     /*-------- Q2 --------*/
-    //x0 = 1.32; 
+    /*
+    x0 = 1.32; 
     for(x0=0.5;x0<=1.5;x0 += 0.5){ 
         sprintf(local, "./ex2/localenergy_x0_%.2f", x0);
         localenergy = fopen(local, "w");
         for(x=-5; x<5; x += 0.1){
-            fprintf(localenergy, "%.2f \t %lf\n", x, local_E(x, x0));
+            fprintf(localenergy, "%.2f \t %lf\n", x, local_E(x, x0, false));
         }
         fclose(localenergy);
     }
+*/
+    
+
+
+    /*------- Q3 ---------*/
+    energies = fopen("./ex3/energies", "w");
+    x0 = 0.5;
+    while(x0 <= 1.50){
+        expected = exp_val(x0, step, H_new, wavepacket_sq);
+        fprintf(energies, "%.3f \t %lf\n", x0, expected);
+        x0 += 0.002;
+    }
+    fclose(energies);
+     
+
 
     return 0;
 }
 
-double H_oscillator(double x, double x0){
+double H(double x, double x0){
 /* Returns the product psi*H(x)*psi at x for a gaussian wave in a harmonic potential 
+ * 
+ * psi = exp(-(x/x0)^2)
  *
  * H(x) = [-d/dx^2 + kx^2]/2 with k = 1.3 
  */
@@ -63,19 +88,37 @@ double H_oscillator(double x, double x0){
     return ( 1/(x0*x0) - 2*x*x*pow(x0, -4) + 0.5*k*x*x ) * gaussian_sq(x, x0);
 }
 
+double H_new(double x, double x0){
+/* Returns the product psi*H(x)*psi at x for a gaussian wave in a harmonic potential 
+ * Used in Q3
+ *
+ * psi = x*exp(-(x/x0)^2)
+ *
+ * H(x) = [-d/dx^2 + kx^2]/2 with k = 1.3 
+ */
+    return 0.5*( 6/(x0*x0) - x*x*(4*pow(x0, -4) - 1.3 ) )*pow(x, 2)*gaussian_sq(x, x0); 
+}
 
-double local_E(double x, double x0){
+double local_E(double x, double x0, bool q3){
 /*
    Returns the local energy of the system
 
    E_local = H(psi)/psi = [-d(psi)/dx^2 / psi + kx^2]/2
-   where psi = exp(-(x/x0)^2)
+
+   where psi =  exp(-(x/x0)^2)          if q3 = false
+             =  x*exp(-(x/x0)^2)        if q3 = true
+
  */
-    return  1/(x0*x0) - 2*x*x*pow(x0, -4) + 0.5*1.3*x*x;
-    
+    if(q3){
+        return 0.5*( 6/(x0*x0) - x*x*(4*pow(x0, -4) - 1.3 ) );
+    }
+    else{
+        return  1/(x0*x0) - 2*x*x*pow(x0, -4) + 0.5*1.3*x*x;
+    }    
 }
 
-double exp_val(double x0, double step){
+
+double exp_val(double x0, double step, double (*h_psi_sq)(double, double), double (*wavefn_sq)(double, double)){
 /*
  * Calculates the expected value of the gaussian wave -> exp[-(x/x0)^2] for a given x0
  * and the Hamiltonian H = [-d/dx^2 + kx^2]/2 with k = 1.3
@@ -87,8 +130,8 @@ double exp_val(double x0, double step){
     double left = -5*x0, right = 5*x0;
     double result = 0;
 
-    result = simpsons(left, right, step, H_oscillator, x0);
-    result = result / simpsons(left, right, step, gaussian_sq, x0);
+    result = simpsons(left, right, step, h_psi_sq, x0);
+    result = result / simpsons(left, right, step, wavefn_sq, x0);
 
 
     return result; 
@@ -117,9 +160,18 @@ double simpsons(double left, double right, double step, double (*f)(double, doub
 
 }
 
+double wavepacket_sq(double x, double x0){
+/*
+ * Returns the square of the wavepacket f(x;x0) = x*exp( -(x/x0)^2 ) with x0 given as a parameter
+ *
+ * Used in Q3
+ */     
+    return x*x*exp(-2*(x*x)/(x0*x0));
+}
+
 double gaussian_sq(double x, double x0){
 /*
- * Returns the squared gaussian function f(x;x0) = exp( -(x/x0)^2 ) with x0 given as a parameter
+ * Returns the square of the gaussian function f(x;x0) = exp( -(x/x0)^2 ) with x0 given as a parameter
  */     
     return exp(-2*(x*x)/(x0*x0));
 }

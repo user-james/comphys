@@ -14,6 +14,6 @@ if __name__ == '__main__':
     plt.ylabel(r"$<E(x_0)>$")
     plt.xlim(0.5, 1.5)
     plt.legend(numpoints = 1)
-    #plt.savefig("energy_x0.jpg")
+    plt.savefig("new_energy_x0.jpg")
     plt.show()
 
