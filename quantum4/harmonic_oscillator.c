@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -71,7 +72,16 @@ int main(int argc, char* argv[]){
         x0 += 0.002;
     }
     fclose(energies);
-     
+    
+    x0 = pow(2.0/pow(1.3,0.5) , 0.5); 
+    //for(x0=0.5;x0<=1.5;x0 += 0.5){ 
+        sprintf(local, "./ex3/localenergy_x0_%.6f", x0);
+        localenergy = fopen(local, "w");
+        for(x=-5; x<5; x += 0.1){
+            fprintf(localenergy, "%.2f \t %lf\n", x, local_E(x, x0, true));
+        }
+        fclose(localenergy);
+    //}
 
 
     return 0;
