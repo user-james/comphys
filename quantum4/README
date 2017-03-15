@@ -8,7 +8,7 @@ Within the programs main function it executes commands to complete all three
 exercises. All functions used are commented and explained. 
 
 The program is written to ensure all files are written to the appropriate
-exercise directory.
+exercise director to prevent any overwriting.
 
 There is a function that tests the integration method for a standard Gaussian
 and a Sine wave incorporated into the program. This is commented out in the 
