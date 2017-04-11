@@ -22,19 +22,20 @@ if __name__=='__main__':
                 min_e = energies[j]
                 ind = j
 
-        thermal_exp.append([temperatures[ind], densities[ind]])
+        thermal_exp.append([densities[ind], min_e])
 
     
     thermal_exp = np.array(thermal_exp)
+    thermal_exp[:, 0] = 80/thermal_exp[:, 0]
     
-    slope = -(thermal_exp[-1, 1] - thermal_exp[0, 1]) / (thermal_exp[-1, 0] - thermal_exp[0, 0])
-    expansivity = 2*slope / (thermal_exp[-1, 1] + thermal_exp[0, 1])
-
-    thermal_exp[:, 1] = 80/thermal_exp[:, 1]
-
-    print("Thermal Expansitivty =", expansivity)
-    plt.xlabel("Temperature")
-    plt.ylabel("Volume")
-    plt.plot(thermal_exp[:, 0], thermal_exp[:, 1])
+    bulk_mods = thermal_exp[:, 1] / thermal_exp[:, 0]
+    avg_bulk_mod = abs(sum(bulk_mods) / len(bulk_mods))
+    print(avg_bulk_mod)
+    print(thermal_exp)
+    
+    #print("Bulk Modulus =", expansivity)
+    #plt.xlabel("Temperature")
+    #plt.ylabel("Volume")
+    #plt.plot(thermal_exp[:, 0], thermal_exp[:, 1])
     #plt.savefig("../plots/vol_vs_temp.jpg")
-    plt.show()
+    #plt.show()
