@@ -24,7 +24,7 @@ if __name__ == '__main__':
     temperatures = np.arange(0.30, 0.029, -0.03)
 
     for i in range(len(temperatures)):
-        pair_low = np.genfromtxt("./length_{:.2f}/pair_distribution_{:d}".format(length, i))
+        pair_low = np.genfromtxt("./data/length_{:.2f}/pair_distribution_{:d}".format(length, i))
         plt.plot(pair_low[:, 0], pair_low[:, 1], label="temp = {:.2f}".format(temperatures[i]))
     
     
@@ -33,5 +33,5 @@ if __name__ == '__main__':
     plt.xlabel("Atomic Distance")
     plt.title("Pair Distribution for  Density = {:.2f}".format(80*length**(-3)))
     plt.legend(loc = 2, fontsize = 12)
-    plt.savefig("../plots/pair_distribution_{:s}".format(figname))
+    plt.savefig("./plots/pair_distribution_{:s}".format(figname))
     plt.show()

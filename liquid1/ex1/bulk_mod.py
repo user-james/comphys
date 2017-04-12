@@ -12,7 +12,7 @@ if __name__=='__main__':
     # sets up arrays for densities, lengths and temperatures used
     lengths = np.arange(4.47, 4.15,-0.05)
     densities = 80*lengths**(-3)
-    temperatures = np.genfromtxt("length_4.17/energy_vs_temp")[:, 0]
+    temperatures = np.genfromtxt("./data/length_4.17/energy_vs_temp")[:, 0]
     data = []
     
     for i in range(len(temperatures)):
@@ -20,7 +20,7 @@ if __name__=='__main__':
 
         # grabs energies for different densities given the temperature
         for l in lengths:
-            energies.append(np.genfromtxt("length_{:.2f}/energy_vs_temp".format(l))[i])
+            energies.append(np.genfromtxt("./data/length_{:.2f}/energy_vs_temp".format(l))[i])
         energies = np.array(energies)
         energies = energies[:, 1]
         min_e = energies[0]
